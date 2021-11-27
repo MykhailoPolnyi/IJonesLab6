@@ -36,10 +36,3 @@ def ijones(height, width, plate):
         return path_to[0][width-1]
 
     return path_to[0][width-1] + path_to[height-1][width-1]
-
-
-if __name__ == "__main__":
-    print(ijones(4, 4, ("absd",
-                        "asoi",
-                        "boai",
-                        "oici")))
