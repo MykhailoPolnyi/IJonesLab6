@@ -17,7 +17,7 @@ def ijones(height, width, plate):
     for row in range(height):
         current_letter = plate[row][0]
         path_to[row][0] = 1
-        _extend_occurrences(letter_occurrences, current_letter, [(row, 0)])
+        _append_occurrences(letter_occurrences, current_letter, (row, 0))
 
     for column in range(1, width):
         new_letter_occurrences = {}
