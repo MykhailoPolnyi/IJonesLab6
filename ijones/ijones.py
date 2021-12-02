@@ -1,36 +1,23 @@
 def ijones(height, width, plate):
-    def _extend_occurrences(extended_dict, extended_letter, new_occurrences):
-        if extended_dict.get(extended_letter):
-            extended_dict[extended_letter].extend(new_occurrences)
-        else:
-            extended_dict[extended_letter] = new_occurrences
-
-    def _append_occurrences(appended_dict, appended_letter, new_occurrence):
-        if appended_dict.get(appended_letter):
-            appended_dict[appended_letter].append(new_occurrence)
-        else:
-            appended_dict[appended_letter] = [new_occurrence]
-
-    path_to = [[0 for i in range(width)] for j in range(height)]
-    letter_occurrences = {}
+    path_to = [[0 for _ in range(width)] for _ in range(height)]
+    paths_to_letter = {}
 
     for row in range(height):
         current_letter = plate[row][0]
         path_to[row][0] = 1
-        _append_occurrences(letter_occurrences, current_letter, (row, 0))
+        paths_to_letter[current_letter] = paths_to_letter.setdefault(current_letter, 0) + 1
 
     for column in range(1, width):
-        new_letter_occurrences = {}
+        new_paths_to_letter = {}
         for row in range(height):
             current_letter = plate[row][column]
-            for occurrence in letter_occurrences.get(current_letter, []):
-                path_to[row][column] += path_to[occurrence[0]][occurrence[1]]
+            path_to[row][column] = paths_to_letter.get(current_letter, 0)
             if plate[row][column-1] != current_letter:
                 path_to[row][column] += path_to[row][column-1]
-            _append_occurrences(new_letter_occurrences, current_letter, (row, column))
+            new_paths_to_letter[current_letter] = new_paths_to_letter.setdefault(current_letter, 0) + path_to[row][column]
 
-        for letter in new_letter_occurrences:
-            _extend_occurrences(letter_occurrences, letter, new_letter_occurrences[letter])
+        for letter in new_paths_to_letter:
+            paths_to_letter[letter] = paths_to_letter.setdefault(letter, 0) + new_paths_to_letter[letter]
 
     if height == 1:
         return path_to[0][width-1]
